@@ -17,7 +17,12 @@ void Machine::loadProgramFile() {
 	fstream tests("test_cases.txt");
 	while (getline(tests, line))
 	{
-		testcases.push_back(line);
+		stringstream ss(line);
+		string name;
+		while (ss >> name) {
+
+		testcases.push_back(name);
+		}
 	};
 }
 
