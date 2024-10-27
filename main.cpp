@@ -30,6 +30,37 @@ void Machine::outputState() {
 	cout << "Output" << endl;
 }
 
+
+
+
+class Memory{
+private:
+    int Size;
+    vector<string> data;
+public:
+    Memory(int S) : Size(S) , data(S,"00"){}
+    string getCell(int address);
+    void setCell(int address, string value);
+};
+
+string Memory::getCell(int address){
+        if (address >= 0 && address < Size) {
+            return data[address];
+        }
+        else{
+            cout << "Address is out of range";
+        }
+    }
+
+void Memory::setCell(int address, string value){
+        if (address >= 0 && address < Size) {
+        data[address] = value;
+        }
+        else{
+            cout << "Address is out of range";
+        }
+    }
+
 int main() {
 
 	return 0;
