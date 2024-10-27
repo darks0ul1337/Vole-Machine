@@ -14,10 +14,10 @@ public:
 	void outputState();
 };
 vector<string> Machine::loadProgramFile() {
-	fstream tests("test_cases.txt");
+	fstream input_instructions("test_cases.txt");
 	vector <string> instructions;
 	string line;
-	while (getline(tests, line))
+	while (getline(input_instructions, line))
 	{
 		stringstream ss(line);
 		string instruction;
