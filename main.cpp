@@ -18,10 +18,10 @@ void Machine::loadProgramFile() {
 	while (getline(tests, line))
 	{
 		stringstream ss(line);
-		string name;
-		while (ss >> name) {
+		string instruction;
+		while (ss >> instruction) {
 
-		testcases.push_back(name);
+		testcases.push_back(instruction);
 		}
 	};
 }
