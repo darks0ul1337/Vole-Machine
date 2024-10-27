@@ -63,6 +63,22 @@ void Memory::setCell(int address, string value){
         }
     }
 
+
+
+
+class CPU{
+    int counter = 0;
+    Regester* instructionRegester;
+public:
+    string fetch(Memory& memory);
+};
+
+string CPU::fetch(Memory &memory) {
+    string currentInstruction;
+    currentInstruction = memory.getCell(counter++) + memory.getCell(counter++);
+    return currentInstruction;
+}
+
 int main() {
 
 	return 0;
