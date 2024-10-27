@@ -1,11 +1,9 @@
-#include <iostream>
-#include <fstream>
-#include "Polynomial.h" // Include your Polynomial library
-#include <string>
-
+#include<bits/stdc++.h>
 using namespace std;
+
 class CPU;
 class Memory;
+
 vector <string> testcases;
 string line;
 class Machine {
