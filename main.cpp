@@ -4,24 +4,26 @@ using namespace std;
 class CPU;
 class Memory;
 
-vector <string> testcases;
-string line;
+
 class Machine {
+protected:
 	CPU* processor;
 	Memory* memory;
 public:
-	void loadProgramFile();
+	vector<string> loadProgramFile();
 	void outputState();
 };
-void Machine::loadProgramFile() {
+vector<string> Machine::loadProgramFile() {
 	fstream tests("test_cases.txt");
+	vector <string> instructions;
+	string line;
 	while (getline(tests, line))
 	{
 		stringstream ss(line);
 		string instruction;
 		while (ss >> instruction) {
 
-		testcases.push_back(instruction);
+		instructions.push_back(instruction);
 		}
 	};
 }
