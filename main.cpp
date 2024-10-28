@@ -8,7 +8,7 @@ class Memory;
 class Machine {
 protected:
 	CPU* processor;
-	Memory* Main_Memory;
+	Memory* Main_Memory(256);
 public:
 	vector<string> loadProgramFile();
 	void outputState();
@@ -69,7 +69,7 @@ void Memory::setCell(int address, string value){
 class CPU{
     int programCounter = 0;
     string instructionRegister;
-    Memory* Register;
+    Memory* Register(16);
 public:
     string fetch(Memory& memory);
 };
