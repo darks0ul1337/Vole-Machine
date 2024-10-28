@@ -127,9 +127,8 @@ class CPU{
 
 public:
     CPU() : Register(16) , cu(), alu(){}
-    vector<string>  decode(string instruction);
     void fetch(Memory& memory);
-    void decode(string instruction);
+    vector<string>  decode(string instruction);
 };
 
 void CPU::fetch(Memory &memory) {
