@@ -77,7 +77,7 @@ public:
 
 string CPU::fetch(Memory &memory) {
     string currentInstruction;
-    currentInstruction = memory.getCell(counter++) + memory.getCell(counter++);
+    currentInstruction = memory.getCell(programCounter++) + memory.getCell(programCounter++);
     return currentInstruction;
 }
 void CPU::decode(string instruction) {
