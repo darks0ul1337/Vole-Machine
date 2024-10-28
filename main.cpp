@@ -128,15 +128,15 @@ class CPU{
 public:
     CPU() : Register(16) , cu(), alu(){}
     vector<string>  decode(string instruction);
-    string fetch(Memory& memory);
+    void fetch(Memory& memory);
+    void decode(string instruction);
 };
 
-string CPU::fetch(Memory &memory) {
-    string currentInstruction;
-    currentInstruction = memory.getCell(programCounter) + memory.getCell(programCounter+1);
+void CPU::fetch(Memory &memory) {
+    instructionRegister = memory.getCell(programCounter) + memory.getCell(programCounter+1);
     programCounter += 2;
-    return currentInstruction;
 }
+
 vector<string> CPU::decode(string instruction) {
     switch (instruction[0]) {
         case '1':
