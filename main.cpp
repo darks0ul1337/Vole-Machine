@@ -119,6 +119,7 @@ bool isValid(string inst) {
 
 
 class CPU{
+private:
     int programCounter = 0;
     string instructionRegister;
     Memory Register;
@@ -131,6 +132,7 @@ public:
     void fetch(Memory& memory);
     vector<string>  decode(string instruction);
     void excute(Memory& Register,Memory& memory,vector<string> instruction);
+    friend class Machine;
 };
 
 void CPU::runNextStep(Memory& memory){
@@ -192,7 +194,7 @@ void CPU::excute(Memory& Register,Memory& memory,vector<string> instruction){
 
 
 class Machine {
-protected:
+private:
     CPU cpu;
     Memory mainMemory;
 public:
@@ -219,7 +221,20 @@ void Machine::loadProgramFile() {
 }
 
 void Machine::outputState() {
-    cout << "Status of the Memory" << endl;
+    cout << "Status of the Memory:" << endl;
+    for (int i = 0; i < 256; i++) {
+        cout << mainMemory.getCell(i) << ' ';
+        if((i+1)%16 == 0){
+            cout << '\n';
+        }
+    }
+    cout << "Status of the Register:" << endl;
+
+    ALU alu;
+    for (int i = 0; i < 16; i++) {
+        cout << "Register " << alu.HexToDec(to_string(i)) << ": " << cpu.Register.getCell(i);
+
+    }
 }
 
 
