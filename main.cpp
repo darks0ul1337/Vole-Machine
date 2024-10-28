@@ -114,21 +114,21 @@ string CPU::fetch(Memory &memory) {
 vector<string> CPU::decode(string instruction) {
 	switch (instruction[0]) {
 	case '1':
-		return { "load", string(instruction[1],1),instruction.substr(2, 2) };
+		return { "1", string(instruction[1],1),instruction.substr(2, 2) };
 	case '2':
-		return { "load", string(instruction[1],1),instruction.substr(2, 2) };
+		return { "2", string(instruction[1],1),instruction.substr(2, 2) };
 	case '3':
-		return { "store", string(instruction[1],1),instruction.substr(2, 2) };
+		return { "3", string(instruction[1],1),instruction.substr(2, 2) };
 	case '4':
-		return { "move", string(instruction[1],1), string(instruction[2],1), string(instruction[3],1) };
+		return { "4", string(instruction[1],1), string(instruction[2],1), string(instruction[3],1) };
 	case '5':
-		return { "add", string(instruction[1],1), string(instruction[2],1), string(instruction[3],1) };
+		return { "5", string(instruction[1],1), string(instruction[2],1), string(instruction[3],1) };
 	case '6':
-		return { "add", string(instruction[1],1), string(instruction[2],1), string(instruction[3],1) };
+		return { "6", string(instruction[1],1), string(instruction[2],1), string(instruction[3],1) };
 	case 'B':
-		return { "jump", string(instruction[1],1),instruction.substr(2, 2) };
+		return { "B", string(instruction[1],1),instruction.substr(2, 2) };
 	case 'C':
-		return { "HALT" };
+		return { "C" };
 
 	default:
 		break;
