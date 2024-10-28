@@ -86,7 +86,7 @@ class CPU{
 
 public:
     CPU() : Register(16) , cu(), alu(){}
-    void decode(string instruction);
+    vector<string>  decode(string instruction);
     string fetch(Memory& memory);
 };
 
@@ -96,27 +96,28 @@ string CPU::fetch(Memory &memory) {
     programCounter += 2;
     return currentInstruction;
 }
-void CPU::decode(string instruction) {
-    switch (instruction[0])	{
-        case '1':
-            // load
-        case '2':
-            // load
-        case '3':
-            // store
-        case '4':
-            // move
-        case '5':
-            // add
-        case '6':
-            // add
-        case 'B':
-            // jump
-        case 'C':
-            // stop
-        default:
-            break;
-    }
+vector<string> CPU::decode(string instruction) {
+	switch (instruction[0]) {
+	case '1':
+		return { "load", string(instruction[1],1),instruction.substr(2, 2) };
+	case '2':
+		return { "load", string(instruction[1],1),instruction.substr(2, 2) };
+	case '3':
+		return { "store", string(instruction[1],1),instruction.substr(2, 2) };
+	case '4':
+		return { "move", string(instruction[1],1), string(instruction[2],1), string(instruction[3],1) };
+	case '5':
+		return { "add", string(instruction[1],1), string(instruction[2],1), string(instruction[3],1) };
+	case '6':
+		return { "add", string(instruction[1],1), string(instruction[2],1), string(instruction[3],1) };
+	case 'B':
+		return { "jump", string(instruction[1],1),instruction.substr(2, 2) };
+	case 'C':
+		return { "HALT" };
+
+	default:
+		break;
+	}
 }
 
 
