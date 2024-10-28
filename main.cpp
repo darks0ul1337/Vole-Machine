@@ -34,8 +34,8 @@ class CU{
 public:
     void store(int idxReg,int idxMem,Memory& Register,Memory& memory);
     void move(int idxReg1,int idxReg2,Memory& Register);
-    void Load(Memory &memory,Memory& regiseter,int idxReg, int idxMem);
-    void Load(Memory& regiseter,int idxReg, string idxMem);
+    void Load(Memory &memory,Memory& Register,int idxReg, int idxMem);
+    void Load(Memory& Register,int idxReg, string idxMem);
     void Jump(Memory& Register, int &counter, int idxReg, int idxMem);
     void halt();
 };
@@ -48,12 +48,12 @@ void CU::move(int idxReg1,int idxReg2,Memory& Register){
     Register.setCell(idxReg2,Register.getCell(idxReg1));
 }
 
-void CU::Load(Memory &memory,Memory& regiseter,int idxReg, int idxMem) {
-    regiseter.setCell(idxReg,memory.getCell(idxMem));
+void CU::Load(Memory &memory,Memory& Register,int idxReg, int idxMem) {
+    Register.setCell(idxReg,memory.getCell(idxMem));
 }
 
-void CU::Load(Memory& regiseter,int idxReg, string idxMem){
-    regiseter.setCell(idxReg, idxMem);
+void CU::Load(Memory& Register,int idxReg, string idxMem){
+    Register.setCell(idxReg, idxMem);
 }
 
 void CU::Jump(Memory &Register, int &counter, int idxReg, int idxMem) {
