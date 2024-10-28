@@ -36,6 +36,7 @@ public:
     void move(int idxReg1,int idxReg2,Memory& Register);
     void Load(Memory &memory,Memory& regiseter,int idxReg, int idxMem);
     void Load(Memory& regiseter,int idxReg, string idxMem);
+    void Jump(Memory& Register, int &counter, int idxReg, int idxMem);
     void halt();
 };
 
@@ -53,6 +54,15 @@ void CU::Load(Memory &memory,Memory& regiseter,int idxReg, int idxMem) {
 
 void CU::Load(Memory& regiseter,int idxReg, string idxMem){
     regiseter.setCell(idxReg, idxMem);
+}
+
+void CU::Jump(Memory &Register, int &counter, int idxReg, int idxMem) {
+    if (Register.getCell(idxReg) == Register.getCell(0)){
+        if (idxMem % 2 == 0)
+            counter = idxMem;
+        else
+            halt();
+    }
 }
 
 void CU::halt(){
