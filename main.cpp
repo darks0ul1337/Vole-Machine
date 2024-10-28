@@ -35,8 +35,37 @@ class CU{
 };
 
 class ALU{
+public:
+    string HexToDec(const string &num);
+    string DecToHex(int num);
 
 };
+
+string ALU::DecToHex(int num) {
+    string hexaList = "0123456789ABCDEF";
+    string result = "";
+    int decimal = num;
+
+    while (decimal > 0) {
+        result = hexaList[decimal % 16] + result;
+        decimal = decimal / 16;
+    }
+
+    return result.empty() ? "0" : result;  // Return "0" if num is 0
+}
+
+string ALU::HexToDec(const string &num) {
+    string hexDigits = "0123456789ABCDEF";
+    int result = 0;
+    int index = num.length() - 1;
+
+    for (char digit : num) {
+        result += hexDigits.find(digit) * static_cast<int>(pow(16, index));
+        index--;
+    }
+    
+    return to_string(result);
+}
 
 class CPU{
     int programCounter = 0;
