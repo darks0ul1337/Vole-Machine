@@ -71,6 +71,7 @@ class CPU{
     string instructionRegister;
     Memory* Register(16);
 public:
+    void decode(string instruction);
     string fetch(Memory& memory);
 };
 
@@ -79,7 +80,28 @@ string CPU::fetch(Memory &memory) {
     currentInstruction = memory.getCell(counter++) + memory.getCell(counter++);
     return currentInstruction;
 }
-
+void CPU::decode(string instruction) {
+	switch (instruction[0])	{
+	case '1':
+		// load
+	case '2':
+		// load
+	case '3':
+		// store
+	case '4':
+		// move
+	case '5':
+		// add
+	case '6':
+		// add
+	case 'b':
+		// jump
+	case 'c':
+		// stop
+	default:
+		break;
+	}
+}
 int main() {
 
 	return 0;
