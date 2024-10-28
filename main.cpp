@@ -170,32 +170,33 @@ vector<string> CPU::decode(string instruction) {
 
 class Machine {
 protected:
-    CPU* cpu;
+    CPU cpu;
     Memory mainMemory;
 public:
     Machine() : cpu() , mainMemory(256){}
-    vector<string> loadProgramFile();
+    void loadProgramFile();
     void outputState();
 };
-vector<string> Machine::loadProgramFile() {
+
+void Machine::loadProgramFile() {
     fstream input_instructions("test_cases.txt");
-    vector <string> instructions;
+    int idxMem = 0;
     string line;
     while (getline(input_instructions, line))
     {
         stringstream ss(line);
         string instruction;
         while (ss >> instruction) {
-
-            instructions.push_back(instruction);
+            mainMemory.setCell(idxMem,instruction.substr(0, 2));
+            idxMem++;
+            mainMemory.setCell(idxMem,instruction.substr(2, 2));
+            idxMem++;
         }
     }
 }
 
-
-
 void Machine::outputState() {
-    cout << "Output" << endl;
+    cout << "Status of the Memory" << endl;
 }
 
 
