@@ -167,6 +167,29 @@ vector<string> CPU::decode(string instruction) {
     }
 }
 
+void CPU::excute(Memory& Register,Memory& memory,vector<string> instruction){
+    switch (instruction[0][0]) {
+        case '1':
+            cu.Load(memory,Register, stoi(instruction[1]), stoi(instruction[2]));
+        case '2':
+            cu.Load(Register,stoi(instruction[1]), instruction[2]);
+        case '3':
+            cu.store(stoi(instruction[1]),stoi(instruction[2]),Register,memory);
+        case '4':
+            cu.move(stoi(instruction[2]),stoi(instruction[3]),Register);
+        case '5':
+            // add
+        case '6':
+            // add
+        case 'B':
+            cu.Jump(Register, programCounter, stoi(instruction[1]), stoi(instruction[2]));
+        case 'C':
+            cu.halt();
+        default:
+            break;
+    }
+}
+
 
 class Machine {
 protected:
