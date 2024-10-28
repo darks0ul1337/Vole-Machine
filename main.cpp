@@ -48,7 +48,7 @@ class ALU{
 public:
     string HexToDec(const string &num);
     string DecToHex(int num);
-
+    bool isValid(string inst);
 };
 
 string ALU::DecToHex(int num) {
@@ -76,6 +76,21 @@ string ALU::HexToDec(const string& num) {
 	string str = to_string(result);
 	return str.insert(0, 2 - str.length(), '0');
 }
+
+
+bool isValid(string inst) {
+    vector<char> validChar = {'1', '2', '3', '4', '5','6', '7', '8', '9', 'A','B', 'C', 'D', 'E', 'F'};
+    for(char c:inst){
+        if (find(validChar.begin(), validChar.end(), c) != validChar.end()) {
+            continue;
+        }
+        else{
+            return 0;
+        }
+    }
+    return 1;
+}
+
 
 class CPU{
     int programCounter = 0;
