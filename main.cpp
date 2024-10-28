@@ -36,6 +36,7 @@ public:
     void move(int idxReg1,int idxReg2,Memory& Register);
     void Load(Memory &memory,Memory& regiseter,int idxReg, int idxMem);
     void Load(Memory& regiseter,int idxReg, string idxMem);
+    void halt();
 };
 
 void CU::store(int idxReg,int idxMem,Memory& Register,Memory& memory){
@@ -53,6 +54,11 @@ void CU::Load(Memory &memory,Memory& regiseter,int idxReg, int idxMem) {
 void CU::Load(Memory& regiseter,int idxReg, string idxMem){
     regiseter.setCell(idxReg, idxMem);
 }
+
+void CU::halt(){
+    exit(0);
+};
+
 
 class ALU{
 public:
