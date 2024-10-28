@@ -200,6 +200,7 @@ private:
 public:
     Machine() : cpu() , mainMemory(256){}
     void loadProgramFile();
+    void run();
     void outputState();
 };
 
@@ -237,11 +238,23 @@ void Machine::outputState() {
     }
 }
 
-
+void Machine::run() {
+    while (true) {
+        cpu.runNextStep(mainMemory);
+        outputState();
+    }
+}
 
 
 
 int main() {
+    Machine machine;
+    
+    machine.loadProgramFile();
+
+    // Run the program
+    cout << "Running program...\n";
+    machine.run();
 
     return 0;
 }
