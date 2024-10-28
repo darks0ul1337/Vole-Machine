@@ -94,9 +94,9 @@ void CPU::decode(string instruction) {
 		// add
 	case '6':
 		// add
-	case 'b':
+	case 'B':
 		// jump
-	case 'c':
+	case 'C':
 		// stop
 	default:
 		break;
