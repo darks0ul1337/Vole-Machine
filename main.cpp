@@ -34,6 +34,8 @@ class CU{
 public:
     void store(int idxReg,int idxMem,Memory& Register,Memory& memory);
     void move(int idxReg1,int idxReg2,Memory& Register);
+    void Load(Memory &memory,Memory& regiseter,int idxReg, int idxMem);
+    void Load(Memory& regiseter,int idxReg, string idxMem);
 };
 
 void CU::store(int idxReg,int idxMem,Memory& Register,Memory& memory){
@@ -42,6 +44,14 @@ void CU::store(int idxReg,int idxMem,Memory& Register,Memory& memory){
 
 void CU::move(int idxReg1,int idxReg2,Memory& Register){
     Register.setCell(idxReg2,Register.getCell(idxReg1));
+}
+
+void CU::Load(Memory &memory,Memory& regiseter,int idxReg, int idxMem) {
+    regiseter.setCell(idxReg,memory.getCell(idxMem));
+}
+
+void CU::Load(Memory& regiseter,int idxReg, string idxMem){
+    regiseter.setCell(idxReg, idxMem);
 }
 
 class ALU{
