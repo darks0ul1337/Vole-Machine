@@ -124,19 +124,19 @@ string CPU::fetch(Memory &memory) {
 vector<string> CPU::decode(string instruction) {
 	switch (instruction[0]) {
 	case '1':
-		return { "1", string(instruction[1],1),instruction.substr(2, 2) };
+		return { "1", alu.HexToDec(string(instruction[1],1)), instruction.substr(2, 2) };
 	case '2':
-		return { "2", string(instruction[1],1),instruction.substr(2, 2) };
+		return { "2", alu.HexToDec(string(instruction[1],1)),alu.HexToDec(instruction.substr(2, 2)) };
 	case '3':
-		return { "3", string(instruction[1],1),instruction.substr(2, 2) };
+		return { "3", alu.HexToDec(string(instruction[1],1)),alu.HexToDec(instruction.substr(2, 2)) };
 	case '4':
-		return { "4", string(instruction[1],1), string(instruction[2],1), string(instruction[3],1) };
+		return { "4", alu.HexToDec(string(instruction[1],1)), alu.HexToDec(string(instruction[2],1)), alu.HexToDec(string(instruction[3],1)) };
 	case '5':
-		return { "5", string(instruction[1],1), string(instruction[2],1), string(instruction[3],1) };
+		return { "5", alu.HexToDec(string(instruction[1],1)), alu.HexToDec(string(instruction[2],1)),alu.HexToDec(string(instruction[3],1)) };
 	case '6':
-		return { "6", string(instruction[1],1), string(instruction[2],1), string(instruction[3],1) };
+		return { "6", alu.HexToDec(string(instruction[1],1)), alu.HexToDec(string(instruction[2],1)),alu.HexToDec(string(instruction[3],1)) };
 	case 'B':
-		return { "B", string(instruction[1],1),instruction.substr(2, 2) };
+		return { "B", alu.HexToDec(string(instruction[1],1)),alu.HexToDec(instruction.substr(2, 2)) };
 	case 'C':
 		return { "C" };
 
