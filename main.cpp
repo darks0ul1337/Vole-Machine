@@ -127,9 +127,16 @@ class CPU{
 
 public:
     CPU() : Register(16) , cu(), alu(){}
+    void runNextStep(Memory& memory);
     void fetch(Memory& memory);
     vector<string>  decode(string instruction);
+    void excute(Memory& Register,Memory& memory,vector<string> instruction);
 };
+
+void CPU::runNextStep(Memory& memory){
+    fetch(memory);
+    excute(Register,memory,decode(instructionRegister));
+}
 
 void CPU::fetch(Memory &memory) {
     instructionRegister = memory.getCell(programCounter) + memory.getCell(programCounter+1);
