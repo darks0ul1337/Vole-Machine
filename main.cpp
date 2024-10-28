@@ -31,8 +31,18 @@ void Memory::setCell(int address, string value){
 }
 
 class CU{
-
+public:
+    void store(int idxReg,int idxMem,Memory& Register,Memory& memory);
+    void move(int idxReg1,int idxReg2,Memory& Register);
 };
+
+void CU::store(int idxReg,int idxMem,Memory& Register,Memory& memory){
+    memory.setCell(idxMem,Register.getCell(idxReg));
+}
+
+void CU::move(int idxReg1,int idxReg2,Memory& Register){
+    Register.setCell(idxReg2,Register.getCell(idxReg1));
+}
 
 class ALU{
 public:
