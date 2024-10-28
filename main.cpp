@@ -64,17 +64,17 @@ string ALU::DecToHex(int num) {
     return result.empty() ? "0" : result;  // Return "0" if num is 0
 }
 
-string ALU::HexToDec(const string &num) {
-    string hexDigits = "0123456789ABCDEF";
-    int result = 0;
-    int index = num.length() - 1;
+string ALU::HexToDec(const string& num) {
+	string hexDigits = "0123456789ABCDEF";
+	int result = 0;
+	int index = num.length() - 1;
 
-    for (char digit : num) {
-        result += hexDigits.find(digit) * static_cast<int>(pow(16, index));
-        index--;
-    }
-    
-    return to_string(result);
+	for (char digit : num) {
+		result += hexDigits.find(digit) * static_cast<int>(pow(16, index));
+		index--;
+	}
+	string str = to_string(result);
+	return str.insert(0, 2 - str.length(), '0');
 }
 
 class CPU{
