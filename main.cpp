@@ -265,6 +265,7 @@ vector<string> CPU::decode(string instruction) {
         case 'C':
             return { "C" };
         case '0':
+            cout << "Opcode not found. Halting" << endl;
             return { "C" };
 
         default:
