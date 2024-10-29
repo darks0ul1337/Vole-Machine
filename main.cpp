@@ -76,8 +76,8 @@ void CU::Load(Memory& Register, int idxReg, string idxMem) {
 }
 
 void CU::Add(int idxReg1, int idxReg2, int idxReg3, Memory& Register) {
-	string i1 = hex_to_bin(to_string(idxReg2));
-	string i2 = hex_to_bin(to_string(idxReg3));
+	string i1 = hex_to_bin(Register.getCell(idxReg2));
+	string i2 = hex_to_bin(Register.getCell(idxReg3));
 
 	if (i2.length() > i1.length()) {
 		i1 = string(i2.length() - i1.length(), '0') + i1;
@@ -101,6 +101,59 @@ void CU::Add(int idxReg1, int idxReg2, int idxReg3, Memory& Register) {
 		result = "1" + result;
 	}
 	Register.setCell(idxReg1, result);
+}
+
+void CU::Add(Memory& Register, int idxReg1, int idxReg2, int idxReg3) {
+		struct Float8 {
+		unsigned int sign : 1;
+		unsigned int exponent : 3;
+		unsigned int mantissa : 4;
+		static Float8 fromBin(string num) {
+			Float8 f8;
+			f8.sign = (num[0] == '1') ? 1 : 0;
+			f8.exponent = stoi(num.substr(1, 3));
+			f8.mantissa = stoi(num.substr(4));
+			cout << int((num[0] == '1') ? 1 : 0) << stoi(num.substr(1, 3)) << stoi(num.substr(4)) << endl;
+			return f8;
+		}
+		static Float8 fromFloat(float num) {
+			Float8 f8;
+			f8.sign = (num < 0) ? 1 : 0;
+			num = fabs(num);
+			int exponent = 0;
+			while (num >= 2.0) {
+				num /= 2.0;
+				exponent++;
+			}
+			while (num < 1.0 && exponent > -4) {
+				num *= 2.0;
+				exponent--;
+			}
+
+			f8.exponent = exponent + 4;
+			f8.mantissa = static_cast<int>(num * 16) & 0xF;
+
+			return f8;
+		}
+		float toFloat() const {
+			float mantissaValue = static_cast<float>(mantissa) / 16.0f;
+			float result = (1.0 + mantissaValue) * pow(2, static_cast<int>(exponent) - 4);
+			return (sign == 1) ? -result : result;
+		}
+		static Float8 add(const Float8& a, const Float8& b) {
+			float result = a.toFloat() + b.toFloat();
+			return fromFloat(result);
+		}
+		string printBinary() const {
+			stringstream ss;
+			ss << sign << bitset<3>(exponent) << bitset<4>(mantissa);
+			return ss.str();
+		}
+	};
+	Float8 i1 = Float8::fromBin(hex_to_bin(Register.getCell(idxReg2)));
+	Float8 i2 = Float8::fromBin(hex_to_bin(Register.getCell(idxReg3)));
+	Float8 result = Float8::add(i1, i2);
+	Register.setCell(idxReg1, bin_to_hex(result.printBinary()))
 }
 
 void CU::Jump(Memory& Register, int& counter, int idxReg, int idxMem) {
@@ -229,7 +282,7 @@ void CPU::excute(Memory& Register, Memory& memory, vector<string> instruction) {
 	case '5':
 		cu.Add(stoi(instruction[1]), stoi(instruction[2]), stoi(instruction[3]), Register);
 	case '6':
-		// add
+		cu.Add(Register, stoi(instruction[1]), stoi(instruction[2]), stoi(instruction[3]));
 	case 'B':
 		cu.Jump(Register, programCounter, stoi(instruction[1]), stoi(instruction[2]));
 	case 'C':
