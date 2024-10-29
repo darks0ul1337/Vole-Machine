@@ -348,10 +348,6 @@ void Machine::outputState() {
 void Machine::run() {
     while (true) {
         cpu.runNextStep(mainMemory);
-        if(cpu.instructionRegister == "0000"){
-            cout << "Opcode not found. Halting" << endl;
-            break;
-        }
         outputState();
     }
 }
