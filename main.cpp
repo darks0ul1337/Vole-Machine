@@ -55,6 +55,7 @@ public:
 	void Load(Memory& memory, Memory& Register, int idxReg, int idxMem);
 	void Load(Memory& Register, int idxReg, string idxMem);
 	void Add(int idReg1, int idReg2, int idReg3, Memory& Register);
+	void Add(Memory& Register, int idxReg1, int idxReg2, int idxReg3);
 	void Jump(Memory& Register, int& counter, int idxReg, int idxMem);
 	void halt();
 };
@@ -104,7 +105,7 @@ void CU::Add(int idxReg1, int idxReg2, int idxReg3, Memory& Register) {
 }
 
 void CU::Add(Memory& Register, int idxReg1, int idxReg2, int idxReg3) {
-		struct Float8 {
+	struct Float8 {
 		unsigned int sign : 1;
 		unsigned int exponent : 3;
 		unsigned int mantissa : 4;
@@ -153,7 +154,7 @@ void CU::Add(Memory& Register, int idxReg1, int idxReg2, int idxReg3) {
 	Float8 i1 = Float8::fromBin(hex_to_bin(Register.getCell(idxReg2)));
 	Float8 i2 = Float8::fromBin(hex_to_bin(Register.getCell(idxReg3)));
 	Float8 result = Float8::add(i1, i2);
-	Register.setCell(idxReg1, bin_to_hex(result.printBinary()))
+	Register.setCell(idxReg1, bin_to_hex(result.printBinary()));
 }
 
 void CU::Jump(Memory& Register, int& counter, int idxReg, int idxMem) {
@@ -358,4 +359,3 @@ int main() {
 
 	return 0;
 }
-
