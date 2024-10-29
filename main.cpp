@@ -264,6 +264,8 @@ vector<string> CPU::decode(string instruction) {
             return { "B", alu.HexToDec(string(instruction[1],1)),alu.HexToDec(instruction.substr(2, 2)) };
         case 'C':
             return { "C" };
+        case '0':
+            return { "C" };
 
         default:
             break;
