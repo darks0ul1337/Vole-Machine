@@ -277,20 +277,28 @@ void CPU::execute(Memory& Reg, Memory& memory, vector<string> instruction) {
     switch (instruction[0][0]) {
         case '1':
             cu.Load(memory, Reg, stoi(instruction[1]), stoi(instruction[2]));
+            break;
         case '2':
             cu.Load(Reg, stoi(instruction[1]), instruction[2]);
+            break;
         case '3':
             cu.store(stoi(instruction[1]), stoi(instruction[2]), Reg, memory);
+            break;
         case '4':
             cu.move(stoi(instruction[2]), stoi(instruction[3]), Reg);
+            break;
         case '5':
             cu.Add(stoi(instruction[1]), stoi(instruction[2]), stoi(instruction[3]), Reg);
+            break;
         case '6':
             cu.Add(Reg, stoi(instruction[1]), stoi(instruction[2]), stoi(instruction[3]));
+            break;
         case 'B':
             cu.Jump(Reg, programCounter, stoi(instruction[1]), stoi(instruction[2]));
+            break;
         case 'C':
             cu.halt();
+            break;
         default:
             break;
     }
