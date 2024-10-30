@@ -34,19 +34,18 @@ string Memory::getCell(int address) {
     if (address >= 0 && address < size) {
         return data[address];
     }
-    else {
-        cout << "Address is out of range";
-    }
+    cout << "Address is out of range" << endl;
+    return "00"; // Return a default value when out of range
 }
 
 void Memory::setCell(int address, string value) {
     if (address >= 0 && address < size) {
         data[address] = value;
-    }
-    else {
-        cout << "Address is out of range";
+    } else {
+        cout << "Address is out of range" << endl;
     }
 }
+
 
 class CU {
 public:
@@ -178,45 +177,54 @@ public:
     bool isValid(string inst);
 };
 
-string ALU::DecToHex(int num) {
-    string hexaList = "0123456789ABCDEF";
-    string result;
-    int decimal = num;
-
-    while (decimal > 0) {
-        result = hexaList[decimal % 16] + result;
-        decimal = decimal / 16;
-    }
-
-    return result.empty() ? "0" : result;  // Return "0" if num is 0
-}
-
 string ALU::HexToDec(const string& num) {
-    string hexDigits = "0123456789ABCDEF";
     int result = 0;
-    int index = num.length() - 1;
+    int base = 1;
 
-    for (char digit : num) {
-        result += hexDigits.find(digit) * static_cast<int>(pow(16, index));
-        index--;
+    // Traverse the hex string from the last character to the first
+    for (int i = num.length() - 1; i >= 0; i--) {
+        char digit = num[i];
+
+        // Convert each hex digit to its decimal value and add to result
+        if (digit >= '0' && digit <= '9') {
+            result += (digit - '0') * base;
+        } else if (digit >= 'A' && digit <= 'F') {
+            result += (digit - 'A' + 10) * base;
+        }
+
+        base *= 16;  // Increase base by power of 16 for the next digit
     }
-    string str = to_string(result);
-    return str.insert(0, 2 - str.length(), '0');
+
+    return to_string(result);
 }
+
+
+string ALU::DecToHex(int num) {
+    const string hexChars = "0123456789ABCDEF";
+    string result;
+
+    do {
+        result = hexChars[num % 16] + result;
+        num /= 16;
+    } while (num > 0);
+
+    return result;
+}
+
+
+
+
 
 
 bool ALU::isValid(string inst) {
-    vector<char> validChar = { '1', '2', '3', '4', '5','6', '7', '8', '9', 'A','B', 'C', 'D', 'E', 'F' };
     for (char c : inst) {
-        if (find(validChar.begin(), validChar.end(), c) != validChar.end()) {
-            continue;
-        }
-        else {
+        if (!((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F'))) {
             return false;
         }
     }
     return true;
 }
+
 
 
 class CPU {
@@ -249,25 +257,24 @@ void CPU::fetch(Memory& memory) {
 vector<string> CPU::decode(string instruction) {
     switch (instruction[0]) {
         case '1':
-            return { "1", alu.HexToDec(string(instruction[1],1)), alu.HexToDec(instruction.substr(2, 2)) };
+            return { "1", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 2)) };
         case '2':
-            return { "2", alu.HexToDec(string(instruction[1],1)),instruction.substr(2, 2) };
+            return { "2", alu.HexToDec(instruction.substr(1, 1)),instruction.substr(2, 2) };
         case '3':
-            return { "3", alu.HexToDec(string(instruction[1],1)),alu.HexToDec(instruction.substr(2, 2)) };
+            return { "3", alu.HexToDec(instruction.substr(1, 1)),alu.HexToDec(instruction.substr(2, 2)) };
         case '4':
-            return { "4", alu.HexToDec(string(instruction[1],1)), alu.HexToDec(string(instruction[2],1)), alu.HexToDec(string(instruction[3],1)) };
+            return { "4", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(string(instruction[2],1)), alu.HexToDec(string(instruction[3],1)) };
         case '5':
-            return { "5", alu.HexToDec(string(instruction[1],1)), alu.HexToDec(string(instruction[2],1)),alu.HexToDec(string(instruction[3],1)) };
+            return { "5", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(string(instruction[2],1)),alu.HexToDec(string(instruction[3],1)) };
         case '6':
-            return { "6", alu.HexToDec(string(instruction[1],1)), alu.HexToDec(string(instruction[2],1)),alu.HexToDec(string(instruction[3],1)) };
+            return { "6", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(string(instruction[2],1)),alu.HexToDec(string(instruction[3],1)) };
         case 'B':
-            return { "B", alu.HexToDec(string(instruction[1],1)),alu.HexToDec(instruction.substr(2, 2)) };
+            return { "B", alu.HexToDec(instruction.substr(1, 1)),alu.HexToDec(instruction.substr(2, 2)) };
         case 'C':
             return { "C" };
         case '0':
             cout << "Opcode not found. Halting" << endl;
             return { "C" };
-
         default:
             break;
     }
@@ -310,7 +317,12 @@ private:
     CPU cpu;
     Memory mainMemory;
 public:
-    Machine() : cpu(), mainMemory(256) {}
+    Machine() : cpu(), mainMemory(256) {
+//        mainMemory.setCell(0,"21");
+//        mainMemory.setCell(1,"A3");
+//        mainMemory.setCell(2,"C0");
+//        mainMemory.setCell(3,"00");
+    }
     void loadProgramFile();
     void run();
     void outputState();
@@ -349,9 +361,9 @@ void Machine::outputState() {
     }
     cout << "Status of the Register:" << endl;
 
-    ALU htod;
+    ALU dtoh;
     for (int i = 0; i < 16; i++) {
-        cout << "Register " << htod.HexToDec(to_string(i)) << ": " << cpu.Register.getCell(i);
+        cout << "Register " << dtoh.DecToHex(i) << ": " << cpu.Register.getCell(i) << endl;
 
     }
 }
