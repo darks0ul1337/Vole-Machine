@@ -263,11 +263,11 @@ vector<string> CPU::decode(string instruction) {
         case '3':
             return { "3", alu.HexToDec(instruction.substr(1, 1)),alu.HexToDec(instruction.substr(2, 2)) };
         case '4':
-            return { "4", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(string(instruction[2],1)), alu.HexToDec(string(instruction[3],1)) };
+            return { "4", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 1)), alu.HexToDec(instruction.substr(3, 1)) };
         case '5':
-            return { "5", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(string(instruction[2],1)),alu.HexToDec(string(instruction[3],1)) };
+            return { "5", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 1)),alu.HexToDec(instruction.substr(3, 1)) };
         case '6':
-            return { "6", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(string(instruction[2],1)),alu.HexToDec(string(instruction[3],1)) };
+            return { "6", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 1)),alu.HexToDec(instruction.substr(3, 1)) };
         case 'B':
             return { "B", alu.HexToDec(instruction.substr(1, 1)),alu.HexToDec(instruction.substr(2, 2)) };
         case 'C':
@@ -279,6 +279,7 @@ vector<string> CPU::decode(string instruction) {
             break;
     }
 }
+
 
 void CPU::execute(Memory& Reg, Memory& memory, vector<string> instruction) {
     switch (instruction[0][0]) {
