@@ -168,12 +168,6 @@ void CU::Jump(Memory& Register, int& counter, int idxReg, int idxMem) { // Condi
     }
 }
 
-void CU::Jump(int& counter, int idxReg, int idxMem, Memory& Register){
-    string regValue = alu.hex_to_bin(Register.getCell(idxMem));
-    if (regValue[0] < Register.getCell(0)[0]);
-
-}
-
 void CU::halt() { // Halt program execution.
     exit(0);
 }
