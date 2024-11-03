@@ -239,10 +239,10 @@ void CPU::execute(Memory& Reg, Memory& memory, vector<string> instruction) { // 
             cu.move(stoi(instruction[2]), stoi(instruction[3]), Reg);
             break;
         case '5': // Add two binary values.
-            cu.Add(stoi(instruction[1]), stoi(instruction[2]), stoi(instruction[3]), Reg);
+            alu.Add(stoi(instruction[1]), stoi(instruction[2]), stoi(instruction[3]), Reg);
             break;
         case '6': // Add two floating-point values.
-            cu.Add(Reg, stoi(instruction[1]), stoi(instruction[2]), stoi(instruction[3]));
+            alu.Add(Reg, stoi(instruction[1]), stoi(instruction[2]), stoi(instruction[3]));
             break;
         case 'B': // Jump to a specific memory address if a condition is met.
             cu.Jump(Reg, programCounter, stoi(instruction[1]), stoi(instruction[2]));
