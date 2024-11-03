@@ -55,31 +55,6 @@ string ALU::DecToHex(int num) { // Convert decimal integer to hexadecimal string
     return result;
 }
 
-bool ALU::isValid(string inst) { // Check if string is a valid hexadecimal.
-    for (char c : inst) {
-        if (!((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F'))) {
-            return false; // Return false if character is not hex.
-        }
-    }
-    return true;
-}
-
-void CU::store(int idxReg, int idxMem, Memory& Register, Memory& memory) { // Store function implementation.
-    memory.setCell(idxMem, Register.getCell(idxReg)); // Copy data from register to memory.
-}
-
-void CU::move(int idxReg1, int idxReg2, Memory& Register) { // Move function implementation.
-    Register.setCell(idxReg2, Register.getCell(idxReg1)); // Copy data between registers.
-}
-
-void CU::Load(Memory& memory, Memory& Register, int idxReg, int idxMem) { // Load function from memory.
-    Register.setCell(idxReg, memory.getCell(idxMem)); // Copy data from memory to register.
-}
-
-void CU::Load(Memory& Register, int idxReg, string idxMem) { // Load function with immediate value.
-    Register.setCell(idxReg, idxMem); // Directly store value in register.
-}
-
 void ALU::Add(int idxReg1, int idxReg2, int idxReg3, Memory& Register) { // Add binary values.
     string i1 = hex_to_bin(Register.getCell(idxReg2)); // Convert data to binary.
     string i2 = hex_to_bin(Register.getCell(idxReg3));
@@ -157,6 +132,31 @@ void ALU::Add(Memory& Register, int idxReg1, int idxReg2, int idxReg3) { // Add 
     Float8 i2 = Float8::fromBin(hex_to_bin(Register.getCell(idxReg3)));
     Float8 result = Float8::add(i1, i2); // Perform addition.
     Register.setCell(idxReg1, bin_to_hex(result.printBinary())); // Store result.
+}
+
+bool ALU::isValid(string inst) { // Check if string is a valid hexadecimal.
+    for (char c : inst) {
+        if (!((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F'))) {
+            return false; // Return false if character is not hex.
+        }
+    }
+    return true;
+}
+
+void CU::store(int idxReg, int idxMem, Memory& Register, Memory& memory) { // Store function implementation.
+    memory.setCell(idxMem, Register.getCell(idxReg)); // Copy data from register to memory.
+}
+
+void CU::move(int idxReg1, int idxReg2, Memory& Register) { // Move function implementation.
+    Register.setCell(idxReg2, Register.getCell(idxReg1)); // Copy data between registers.
+}
+
+void CU::Load(Memory& memory, Memory& Register, int idxReg, int idxMem) { // Load function from memory.
+    Register.setCell(idxReg, memory.getCell(idxMem)); // Copy data from memory to register.
+}
+
+void CU::Load(Memory& Register, int idxReg, string idxMem) { // Load function with immediate value.
+    Register.setCell(idxReg, idxMem); // Directly store value in register.
 }
 
 void CU::Jump(Memory& Register, int& counter, int idxReg, int idxMem) { // Conditional jump.
