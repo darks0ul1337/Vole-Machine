@@ -204,6 +204,13 @@ void CU::Jump(Memory& Register, int& counter, int idxReg, int idxMem) { // Condi
     }
 }
 
+
+void CU::rotate(Memory& Register, int idxReg, int rotations){
+    string R = alu.hex_to_bin(Register.getCell(idxReg));
+    R = R.substr(R.length()-rotations,rotations) + R.substr(0,R.length()-rotations) ;
+    Register.setCell(idxReg,alu.bin_to_hex(R));
+}
+
 void CU::Jump(int& counter, int idxReg, int idxMem, Memory& Register){
     stringstream ss;
     string regValue = alu.hex_to_bin(Register.getCell(idxReg));
@@ -231,12 +238,6 @@ void CU::Jump(int& counter, int idxReg, int idxMem, Memory& Register){
             else
                 halt(); // Halt if address is invalid.
     }
-}
-
-void CU::rotate(Memory& Register, int idxReg, int rotations){
-    string R = alu.hex_to_bin(Register.getCell(idxReg));
-    R = R.substr(R.length()-rotations,rotations) + R.substr(0,R.length()-rotations) ;
-    Register.setCell(idxReg,alu.bin_to_hex(R));
 }
 
 void CU::halt() { // Halt program execution.
