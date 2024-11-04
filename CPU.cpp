@@ -249,7 +249,7 @@ void CPU::runNextStep(Memory& memory) { // Perform one complete step: fetch, dec
     execute(Register, memory, decode(instructionRegister)); // Decode and execute the fetched instruction.
 }
 
-void CPU::setcounter() {
+void CPU::setCounter() {
     string counter;
     int count;
     do {
@@ -260,7 +260,7 @@ void CPU::setcounter() {
     programCounter = count;
 }
 
-int CPU::getcounter() {
+int CPU::getCounter() {
     return programCounter;
 }
 
