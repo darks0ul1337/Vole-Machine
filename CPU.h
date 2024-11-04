@@ -54,8 +54,8 @@ public:
     void fetch(Memory& memory); // Fetch the next instruction from memory.
     vector<string> decode(string instruction); // Decode the instruction into components.
     void execute(Memory& Reg, Memory& memory, vector<string> instruction); // Execute a decoded instruction.
-    void setcounter();
-    int getcounter();
+    void setCounter();
+    int getCounter();
     friend class Machine; // Grant Machine class access to CPU's private members.
 };
 
