@@ -4,9 +4,9 @@
 
 #include "Vole_Machine.h"
 void Machine::loadProgramFile() { // Load instructions from a file into main memory.
-    cpu.setcounter();
+    cpu.setCounter();
     fstream input_instructions("test_cases.txt"); // Open file containing program instructions.
-    int idxMem = cpu.getcounter(); // Start at the beginning of memory.
+    int idxMem = cpu.getCounter(); // Start at the beginning of memory.
     string line;
     while (getline(input_instructions, line)) // Read each line from the file.
     {
