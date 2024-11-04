@@ -55,6 +55,19 @@ string ALU::DecToHex(int num) { // Convert decimal integer to hexadecimal string
     return result;
 }
 
+int ALU::BinToDec(const string& num) {
+    int result = 0;
+    int index = num.length() - 1;
+
+    // Calculate decimal value by multiplying each bit by its positional power of 2
+    for (char bit : num) {
+        result += (bit - '0') * pow(2, index);
+        index--;  // Decrease the index for the next digit position
+    }
+
+    return result;
+}
+
 void ALU::Add(int idxReg1, int idxReg2, int idxReg3, Memory& Register) { // Add binary values.
     string i1 = hex_to_bin(Register.getCell(idxReg2)); // Convert data to binary.
     string i2 = hex_to_bin(Register.getCell(idxReg3));
@@ -191,6 +204,35 @@ void CU::Jump(Memory& Register, int& counter, int idxReg, int idxMem) { // Condi
     }
 }
 
+void CU::Jump(int& counter, int idxReg, int idxMem, Memory& Register){
+    stringstream ss;
+    string regValue = alu.hex_to_bin(Register.getCell(idxReg));
+    string reg0Value = alu.hex_to_bin(Register.getCell(0));
+    if (regValue.length() > reg0Value.length()){
+        ss << setw(8) << setfill('0') << reg0Value;
+    }
+    else{
+        ss << setw(8) << setfill('0') << regValue;
+    }
+    if (regValue[0] > reg0Value[0]){
+        return;
+    }
+
+    else if (regValue[0] < reg0Value[0]){
+        if (idxMem % 2 == 0) // Ensure valid memory address.
+            counter = idxMem; // Set program counter to new address.
+        else
+            halt(); // Halt if address is invalid.
+    }
+    else{
+        if (alu.BinToDec(regValue) > alu.BinToDec(reg0Value))
+            if (idxMem % 2 == 0) // Ensure valid memory address.
+                counter = idxMem; // Set program counter to new address.
+            else
+                halt(); // Halt if address is invalid.
+    }
+}
+
 void CU::rotate(Memory& Register, int idxReg, int rotations){
     string R = alu.hex_to_bin(Register.getCell(idxReg));
     R = R.substr(R.length()-rotations,rotations) + R.substr(0,R.length()-rotations) ;
@@ -252,6 +294,8 @@ vector<string> CPU::decode(string instruction) { // Decode the instruction into 
             return { "B", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 2)) };
         case 'C': // Halt the CPU.
             return { "C" };
+        case 'D':
+            return  { "D" , alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 2))};
         case '0': // If opcode is unrecognized, halt the program.
             cout << "Opcode not found. Halting" << endl;
             return { "C" };
@@ -297,6 +341,9 @@ void CPU::execute(Memory& Reg, Memory& memory, vector<string> instruction) { // 
             break;
         case 'C': // Halt the CPU.
             cu.halt();
+            break;
+        case 'D':
+            cu.Jump(programCounter, stoi(instruction[1]), stoi(instruction[2]), Reg);
             break;
         default:
             break;
