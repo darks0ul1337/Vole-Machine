@@ -134,6 +134,28 @@ void ALU::Add(Memory& Register, int idxReg1, int idxReg2, int idxReg3) { // Add 
     Register.setCell(idxReg1, bin_to_hex(result.printBinary())); // Store result.
 }
 
+
+void ALU::OR(Memory& Register, int idxReg1, int idxReg2, int idxReg3){
+    int R1 = stoi(HexToDec(Register.getCell(idxReg2)));
+    int R2 = stoi(HexToDec(Register.getCell(idxReg3)));
+    int result = R1 | R2 ;
+    Register.setCell(idxReg1,DecToHex(result));
+}
+
+void ALU::AND(Memory& Register, int idxReg1, int idxReg2, int idxReg3){
+    int R1 = stoi(HexToDec(Register.getCell(idxReg2)));
+    int R2 = stoi(HexToDec(Register.getCell(idxReg3)));
+    int result = R1 & R2 ;
+    Register.setCell(idxReg1,DecToHex(result));
+}
+
+void ALU::XOR(Memory& Register, int idxReg1, int idxReg2, int idxReg3){
+    int R1 = stoi(HexToDec(Register.getCell(idxReg2)));
+    int R2 = stoi(HexToDec(Register.getCell(idxReg3)));
+    int result = R1 ^ R2 ;
+    Register.setCell(idxReg1,DecToHex(result));
+}
+
 bool ALU::isValid(string inst) { // Check if string is a valid hexadecimal.
     for (char c : inst) {
         if (!((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F'))) {
@@ -159,6 +181,7 @@ void CU::Load(Memory& Register, int idxReg, string idxMem) { // Load function wi
     Register.setCell(idxReg, idxMem); // Directly store value in register.
 }
 
+
 void CU::Jump(Memory& Register, int& counter, int idxReg, int idxMem) { // Conditional jump.
     if (Register.getCell(idxReg) == Register.getCell(0)) { // If condition is met.
         if (idxMem % 2 == 0) // Ensure valid memory address.
@@ -166,6 +189,12 @@ void CU::Jump(Memory& Register, int& counter, int idxReg, int idxMem) { // Condi
         else
             halt(); // Halt if address is invalid.
     }
+}
+
+void CU::rotate(Memory& Register, int idxReg, int rotations){
+    string R = alu.hex_to_bin(Register.getCell(idxReg));
+    R = R.substr(R.length()-rotations,rotations) + R.substr(0,R.length()-rotations) ;
+    Register.setCell(idxReg,alu.bin_to_hex(R));
 }
 
 void CU::halt() { // Halt program execution.
@@ -211,6 +240,14 @@ vector<string> CPU::decode(string instruction) { // Decode the instruction into 
             return { "5", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 1)), alu.HexToDec(instruction.substr(3, 1)) };
         case '6': // Add two floating-point values and store result.
             return { "6", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 1)), alu.HexToDec(instruction.substr(3, 1)) };
+        case '7':
+            return { "7", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 1)), alu.HexToDec(instruction.substr(3, 1)) };
+        case '8':
+            return { "8", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 1)), alu.HexToDec(instruction.substr(3, 1)) };
+        case '9':
+            return { "9", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 1)), alu.HexToDec(instruction.substr(3, 1)) };
+        case 'A':
+            return { "A", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 1)), alu.HexToDec(instruction.substr(3, 1)) };
         case 'B': // Jump to a specific memory address if a condition is met.
             return { "B", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 2)) };
         case 'C': // Halt the CPU.
@@ -243,6 +280,18 @@ void CPU::execute(Memory& Reg, Memory& memory, vector<string> instruction) { // 
         case '6': // Add two floating-point values.
             alu.Add(Reg, stoi(instruction[1]), stoi(instruction[2]), stoi(instruction[3]));
             break;
+        case '7':
+            alu.OR(Reg,stoi(instruction[1]), stoi(instruction[2]), stoi(instruction[3]));
+            break;
+        case '8':
+            alu.AND(Reg,stoi(instruction[1]), stoi(instruction[2]), stoi(instruction[3]));
+            break;
+        case '9':
+            alu.XOR(Reg,stoi(instruction[1]), stoi(instruction[2]), stoi(instruction[3]));
+            break;
+        case 'A':
+            cu.rotate(Reg,stoi(instruction[1]), stoi(instruction[3]));
+            break;
         case 'B': // Jump to a specific memory address if a condition is met.
             cu.Jump(Reg, programCounter, stoi(instruction[1]), stoi(instruction[2]));
             break;
@@ -253,7 +302,3 @@ void CPU::execute(Memory& Reg, Memory& memory, vector<string> instruction) { // 
             break;
     }
 }
-
-
-
-
