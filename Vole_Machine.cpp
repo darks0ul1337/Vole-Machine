@@ -46,7 +46,7 @@ void Machine::outputState() { // Display the current memory and register states.
 void Machine::run() {
     // Run the CPU, executing each instruction until a halt condition.
     while (true) { // Continuous execution loop.
-        if(mainMemory.getCell(cpu.getcounter()) == "C0"){
+        if(mainMemory.getCell(cpu.getCounter()) == "C0"){
             break;
         }
         cpu.runNextStep(mainMemory); // Run the next step (fetch-decode-execute).
