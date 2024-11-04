@@ -14,6 +14,7 @@ public:
     string bin_to_hex(string num); // Convert binary to hexadecimal.
     string HexToDec(const string& num); // Convert hexadecimal to decimal.
     string DecToHex(int num); // Convert decimal to hexadecimal.
+    int BinToDec(const string& num);
     void Add(int idReg1, int idReg2, int idReg3, Memory& Register); // Add binary values in registers.
     void Add(Memory& Register, int idxReg1, int idxReg2, int idxReg3); // Add floating-point values in registers.
     void OR(Memory& Register, int idxReg1, int idxReg2, int idxReg3);
@@ -32,6 +33,7 @@ public:
     void Load(Memory& Register, int idxReg, string idxMem); // Load immediate value to register.
     void Jump(Memory& Register, int& counter, int idxReg, int idxMem); // Conditional jump based on register value.
     void rotate(Memory& Register, int idxReg, int rotations);
+     void Jump(int& counter, int idxReg, int idxMem, Memory& Register);
     void halt(); // Halt program execution.
 };
 
