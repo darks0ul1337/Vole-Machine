@@ -170,11 +170,11 @@ void ALU::XOR(Memory& Register, int idxReg1, int idxReg2, int idxReg3){
 }
 
 bool ALU::isValid(string inst) { // Check whether the instruction is a valid or not.
-    if (!((inst[0] >= '1' && inst[0] <= '9') || (inst[0] >= 'A' && inst[0] <= 'D' || (inst[0] >= 'a' && inst[0] <= 'd'))) {
+    if (!((inst[0] >= '1' && inst[0] <= '9') || (inst[0] >= 'A' && inst[0] <= 'D') || (inst[0] >= 'a' && inst[0] <= 'd'))) {
         return false; // Return false if the instruction is not valid.
     }
     for (int i = 1; i < 4; i++) {
-        if (!((inst[i] >= '0' && inst[i] <= '9') || (inst[i] >= 'A' && inst[i] <= 'F' (inst[i] >= 'a' && inst[i] <= 'f'))) {
+        if (!((inst[i] >= '0' && inst[i] <= '9') || (inst[i] >= 'A' && inst[i] <= 'F' )||(inst[i] >= 'a' && inst[i] <= 'f'))) {
             return false; // Return false if character is not hex.
         }
     }
@@ -353,3 +353,6 @@ void CPU::execute(Memory& Reg, Memory& memory, vector<string> instruction) { // 
             break;
     }
 }
+string CPU::getReg(int idx){
+    return Register.getCell(idx);
+};
