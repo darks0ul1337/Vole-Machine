@@ -178,6 +178,11 @@ bool ALU::isValid(string inst) { // Check whether the instruction is a valid or 
             return false; // Return false if character is not hex.
         }
     }
+    for (int i = 0; i < 4; ++i) {
+        if (!isdigit(inst[i])){
+            inst[i] = toupper(inst[i]);
+        }
+    }
     return true;
 }
 
