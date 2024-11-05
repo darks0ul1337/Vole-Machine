@@ -1,3 +1,4 @@
+
 //
 // Created by pc on 11/2/2024.
 //
@@ -14,7 +15,7 @@ private:
     Memory mainMemory; // Main memory for holding the program and data.
 public:
     Machine() : cpu(), mainMemory(256) {} // Initialize Machine with a CPU and 256 memory cells.
-    void loadProgramFile(string filename); // Load program instructions from a file.
+    void loadProgramFile(string filename,string start); // Load program instructions from a file.
     void run(); // Run the loaded program.
     void outputState(); // Output the current state of memory and registers.
     string getCell(int idx);
