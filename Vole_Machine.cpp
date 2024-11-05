@@ -30,6 +30,7 @@ void Machine::loadProgramFile(string filename,string start) { // Load instructio
 
 void Machine::outputState() { // Display the current memory and register states.
     ALU dtoh;
+    cout << "Program counter: " << cpu.getCounter() << endl;
     cout << "Status of the Memory:" << endl;
     for (int i = 0; i < 256; i++) { // Output each memory cell's contents.
         cout << mainMemory.getCell(i) << ' ';
@@ -46,9 +47,14 @@ void Machine::outputState() { // Display the current memory and register states.
 
 
 void Machine::run() {
+    // Run the CPU, executing each instruction until a halt condition.
+    while (true) { // Continuous execution loop.
+        if(mainMemory.getCell(cpu.getCounter()) == "C0" || cpu.getCounter() % 2){
+            break;
+        }
         cpu.runNextStep(mainMemory); // Run the next step (fetch-decode-execute).
         outputState(); // Output the current state after each step.
-
+    }
 }
 
 string Machine::getCell(int idx){
