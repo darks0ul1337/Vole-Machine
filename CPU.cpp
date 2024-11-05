@@ -169,7 +169,7 @@ void ALU::XOR(Memory& Register, int idxReg1, int idxReg2, int idxReg3){
     Register.setCell(idxReg1,DecToHex(result));
 }
 
-bool ALU::isValid(string inst) { // Check whether the instruction is a valid or not.
+bool ALU::isValid(string &inst) { // Check whether the instruction is a valid or not.
     if (!((inst[0] >= '1' && inst[0] <= '9') || (inst[0] >= 'A' && inst[0] <= 'D') || (inst[0] >= 'a' && inst[0] <= 'd'))) {
         return false; // Return false if the instruction is not valid.
     }
