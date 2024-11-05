@@ -1,15 +1,12 @@
-#include <bits/stdc++.h>
-#include "Vole_Machine.h"
+#include "mainwindow.h"
 
+#include <QApplication>
 
-int main() { // Main function to initialize and run the Machine.
-    Machine machine;
+int main(int argc, char *argv[])
+{
 
-    machine.loadProgramFile(); // Load the program from the file.
-
-    // Run the program
-    cout << "Running program...\n";
-    machine.run();
-
-    return 0;
+    QApplication a(argc, argv);
+    MainWindow w;
+    w.show();
+    return a.exec();
 }

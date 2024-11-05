@@ -252,12 +252,11 @@ void CPU::runNextStep(Memory& memory) { // Perform one complete step: fetch, dec
     execute(Register, memory, decode(instructionRegister)); // Decode and execute the fetched instruction.
 }
 
-void CPU::setCounter() {
-    string counter;
+void CPU::setCounter(string counter) {
     int count;
+    cout <<counter<<endl;
+
     do {
-        cout << "Enter the program counter:\n";
-        cin >> counter;
         count = stoi(alu.HexToDec(counter));
     } while (count % 2 == 1 && count > 0);
     programCounter = count;
