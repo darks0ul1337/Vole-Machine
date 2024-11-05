@@ -33,7 +33,7 @@ public:
     void Load(Memory& Register, int idxReg, string idxMem); // Load immediate value to register.
     void Jump(Memory& Register, int& counter, int idxReg, int idxMem); // Conditional jump based on register value.
     void rotate(Memory& Register, int idxReg, int rotations);
-     void Jump(int& counter, int idxReg, int idxMem, Memory& Register);
+    void Jump(int& counter, int idxReg, int idxMem, Memory& Register);
     void halt(); // Halt program execution.
 };
 
@@ -56,6 +56,7 @@ public:
     void execute(Memory& Reg, Memory& memory, vector<string> instruction); // Execute a decoded instruction.
     void setCounter();
     int getCounter();
+    string getReg(int idx);
     friend class Machine; // Grant Machine class access to CPU's private members.
 };
 
