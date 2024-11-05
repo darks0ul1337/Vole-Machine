@@ -14,9 +14,11 @@ private:
     Memory mainMemory; // Main memory for holding the program and data.
 public:
     Machine() : cpu(), mainMemory(256) {} // Initialize Machine with a CPU and 256 memory cells.
-    void loadProgramFile(); // Load program instructions from a file.
+    void loadProgramFile(string filename); // Load program instructions from a file.
     void run(); // Run the loaded program.
     void outputState(); // Output the current state of memory and registers.
+    string getCell(int idx);
+    string getReg(int idx);
 };
 
 
