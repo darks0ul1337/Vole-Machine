@@ -3,10 +3,10 @@
 //
 
 #include "Vole_Machine.h"
-void Machine::loadProgramFile() { // Load instructions from a file into main memory.
-    cpu.setCounter();
-    fstream input_instructions("test_cases.txt"); // Open file containing program instructions.
-    int idxMem = cpu.getCounter(); // Start at the beginning of memory.
+void Machine::loadProgramFile(string filename) { // Load instructions from a file into main memory.
+    cpu.setcounter();
+    fstream input_instructions(filename); // Open file containing program instructions.
+    int idxMem = cpu.getcounter(); // Start at the beginning of memory.
     string line;
     while (getline(input_instructions, line)) // Read each line from the file.
     {
@@ -52,4 +52,12 @@ void Machine::run() {
         cpu.runNextStep(mainMemory); // Run the next step (fetch-decode-execute).
         outputState(); // Output the current state after each step.
     }
+}
+
+string Machine::getCell(int idx){
+    return mainMemory.getCell(idx);
+}
+
+string Machine::getReg(int idx){
+    return cpu.getReg(idx);
 }
