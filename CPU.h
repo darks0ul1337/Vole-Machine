@@ -25,6 +25,7 @@ public:
 
 class CU { // Define a CU (Control Unit) class to manage operations.
 private:
+    bool is_halted = false;
     ALU alu; // Create instance of ALU class.
 public:
     void store(int idxReg, int idxMem, Memory& Register, Memory& memory); // Store data from register to memory.
@@ -35,6 +36,7 @@ public:
     void rotate(Memory& Register, int idxReg, int rotations);
     void Jump(int& counter, int idxReg, int idxMem, Memory& Register);
     void halt(); // Halt program execution.
+    friend class CPU;
 };
 
 
@@ -57,6 +59,7 @@ public:
     void setCounter(string counter);
     int getCounter();
     string getReg(int idx);
+    bool get_is_halted();
     friend class Machine; // Grant Machine class access to CPU's private members.
 };
 

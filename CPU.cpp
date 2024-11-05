@@ -234,12 +234,15 @@ void CU::Jump(int& counter, int idxReg, int idxMem, Memory& Register){
 }
 
 void CU::halt() { // Halt program execution.
-    exit(0);
+    is_halted = true;
+
 }
 
 void CPU::runNextStep(Memory& memory) { // Perform one complete step: fetch, decode, and execute.
-    fetch(memory); // Fetch instruction from memory.
-    execute(Register, memory, decode(instructionRegister)); // Decode and execute the fetched instruction.
+    if(!get_is_halted()){
+        fetch(memory); // Fetch instruction from memory.
+        execute(Register, memory, decode(instructionRegister)); // Decode and execute the fetched instruction.
+    }
 }
 
 void CPU::setCounter(string counter) {
@@ -263,84 +266,89 @@ void CPU::fetch(Memory& memory) { // Fetch the instruction at the current progra
 
 vector<string> CPU::decode(string instruction) { // Decode the instruction into components based on the opcode.
     switch (instruction[0]) { // Use the first character to determine the operation.
-        case '1': // Load a value from memory to a register.
-            return { "1", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 2)) };
-        case '2': // Load an immediate value to a register.
-            return { "2", alu.HexToDec(instruction.substr(1, 1)), instruction.substr(2, 2) };
-        case '3': // Store a register's value into memory.
-            return { "3", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 2)) };
-        case '4': // Move data between registers.
-            return { "4", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 1)), alu.HexToDec(instruction.substr(3, 1)) };
-        case '5': // Add two binary values and store result.
-            return { "5", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 1)), alu.HexToDec(instruction.substr(3, 1)) };
-        case '6': // Add two floating-point values and store result.
-            return { "6", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 1)), alu.HexToDec(instruction.substr(3, 1)) };
-        case '7':
-            return { "7", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 1)), alu.HexToDec(instruction.substr(3, 1)) };
-        case '8':
-            return { "8", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 1)), alu.HexToDec(instruction.substr(3, 1)) };
-        case '9':
-            return { "9", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 1)), alu.HexToDec(instruction.substr(3, 1)) };
-        case 'A':
-            return { "A", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 1)), alu.HexToDec(instruction.substr(3, 1)) };
-        case 'B': // Jump to a specific memory address if a condition is met.
-            return { "B", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 2)) };
-        case 'C': // Halt the CPU.
-            return { "C" };
-        case 'D':
-            return  { "D" , alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 2))};
-        case '0': // If opcode is unrecognized, halt the program.
-            cout << "Opcode not found. Halting" << endl;
-            return { "C" };
-        default:
-            break;
+    case '1': // Load a value from memory to a register.
+        return { "1", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 2)) };
+    case '2': // Load an immediate value to a register.
+        return { "2", alu.HexToDec(instruction.substr(1, 1)), instruction.substr(2, 2) };
+    case '3': // Store a register's value into memory.
+        return { "3", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 2)) };
+    case '4': // Move data between registers.
+        return { "4", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 1)), alu.HexToDec(instruction.substr(3, 1)) };
+    case '5': // Add two binary values and store result.
+        return { "5", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 1)), alu.HexToDec(instruction.substr(3, 1)) };
+    case '6': // Add two floating-point values and store result.
+        return { "6", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 1)), alu.HexToDec(instruction.substr(3, 1)) };
+    case '7':
+        return { "7", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 1)), alu.HexToDec(instruction.substr(3, 1)) };
+    case '8':
+        return { "8", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 1)), alu.HexToDec(instruction.substr(3, 1)) };
+    case '9':
+        return { "9", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 1)), alu.HexToDec(instruction.substr(3, 1)) };
+    case 'A':
+        return { "A", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 1)), alu.HexToDec(instruction.substr(3, 1)) };
+    case 'B': // Jump to a specific memory address if a condition is met.
+        return { "B", alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 2)) };
+    case 'C': // Halt the CPU.
+        return { "C" };
+    case 'D':
+        return  { "D" , alu.HexToDec(instruction.substr(1, 1)), alu.HexToDec(instruction.substr(2, 2))};
+    case '0': // If opcode is unrecognized, halt the program.
+        cout << "Opcode not found. Halting" << endl;
+        return { "C" };
+    default:
+        break;
     }
+}
+
+bool CPU::get_is_halted(){
+    return cu.is_halted;
 }
 
 void CPU::execute(Memory& Reg, Memory& memory, vector<string> instruction) { // Execute the decoded instruction.
     switch (instruction[0][0]) { // Determine the operation based on opcode.
-        case '1': // Load a value from memory to a register.
-            cu.Load(memory, Reg, stoi(instruction[1]), stoi(instruction[2]));
-            break;
-        case '2': // Load an immediate value to a register.
-            cu.Load(Reg, stoi(instruction[1]), instruction[2]);
-            break;
-        case '3': // Store a register's value into memory.
-            cu.store(stoi(instruction[1]), stoi(instruction[2]), Reg, memory);
-            break;
-        case '4': // Move data between registers.
-            cu.move(stoi(instruction[2]), stoi(instruction[3]), Reg);
-            break;
-        case '5': // Add two binary values.
-            alu.Add(stoi(instruction[1]), stoi(instruction[2]), stoi(instruction[3]), Reg);
-            break;
-        case '6': // Add two floating-point values.
-            alu.Add(Reg, stoi(instruction[1]), stoi(instruction[2]), stoi(instruction[3]));
-            break;
-        case '7':
-            alu.OR(Reg,stoi(instruction[1]), stoi(instruction[2]), stoi(instruction[3]));
-            break;
-        case '8':
-            alu.AND(Reg,stoi(instruction[1]), stoi(instruction[2]), stoi(instruction[3]));
-            break;
-        case '9':
-            alu.XOR(Reg,stoi(instruction[1]), stoi(instruction[2]), stoi(instruction[3]));
-            break;
-        case 'A':
-            cu.rotate(Reg,stoi(instruction[1]), stoi(instruction[3]));
-            break;
-        case 'B': // Jump to a specific memory address if a condition is met.
-            cu.Jump(Reg, programCounter, stoi(instruction[1]), stoi(instruction[2]));
-            break;
-        case 'C': // Halt the CPU.
-            cu.halt();
-            break;
-        case 'D':
-            cu.Jump(programCounter, stoi(instruction[1]), stoi(instruction[2]), Reg);
-            break;
-        default:
-            break;
+    case '1': // Load a value from memory to a register.
+        cu.Load(memory, Reg, stoi(instruction[1]), stoi(instruction[2]));
+        break;
+    case '2': // Load an immediate value to a register.
+        cu.Load(Reg, stoi(instruction[1]), instruction[2]);
+        break;
+    case '3': // Store a register's value into memory.
+        cu.store(stoi(instruction[1]), stoi(instruction[2]), Reg, memory);
+        break;
+    case '4': // Move data between registers.
+        cu.move(stoi(instruction[2]), stoi(instruction[3]), Reg);
+        break;
+    case '5': // Add two binary values.
+        alu.Add(stoi(instruction[1]), stoi(instruction[2]), stoi(instruction[3]), Reg);
+        break;
+    case '6': // Add two floating-point values.
+        alu.Add(Reg, stoi(instruction[1]), stoi(instruction[2]), stoi(instruction[3]));
+        break;
+    case '7':
+        alu.OR(Reg,stoi(instruction[1]), stoi(instruction[2]), stoi(instruction[3]));
+        break;
+    case '8':
+        alu.AND(Reg,stoi(instruction[1]), stoi(instruction[2]), stoi(instruction[3]));
+        break;
+    case '9':
+        alu.XOR(Reg,stoi(instruction[1]), stoi(instruction[2]), stoi(instruction[3]));
+        break;
+    case 'A':
+        cu.rotate(Reg,stoi(instruction[1]), stoi(instruction[3]));
+        break;
+    case 'B': // Jump to a specific memory address if a condition is met.
+        cu.Jump(Reg, programCounter, stoi(instruction[1]), stoi(instruction[2]));
+        break;
+    case 'C': // Halt the CPU.
+        cu.halt();
+        break;
+    case 'D':
+        cu.Jump(programCounter, stoi(instruction[1]), stoi(instruction[2]), Reg);
+        break;
+    default:
+        break;
     }
+
 }
 string CPU::getReg(int idx){
     return Register.getCell(idx);
