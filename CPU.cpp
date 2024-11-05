@@ -204,12 +204,8 @@ void CU::Load(Memory& Register, int idxReg, string idxMem) { // Load function wi
 
 
 void CU::Jump(Memory& Register, int& counter, int idxReg, int idxMem) { // Conditional jump.
-    if (Register.getCell(idxReg) == Register.getCell(0)) { // If condition is met.
-        if (idxMem % 2 == 0) // Ensure valid memory address.
-            counter = idxMem; // Set program counter to new address.
-        else
-            halt(); // Halt if address is invalid.
-    }
+    if (Register.getCell(idxReg) == Register.getCell(0))  // If condition is met.
+        counter = idxMem; // Set program counter to new address.
 }
 
 
@@ -223,28 +219,17 @@ void CU::Jump(int& counter, int idxReg, int idxMem, Memory& Register){
     stringstream ss;
     string regValue = alu.hex_to_bin(Register.getCell(idxReg));
     string reg0Value = alu.hex_to_bin(Register.getCell(0));
-    if (regValue.length() > reg0Value.length()){
+    if (regValue.length() > reg0Value.length())
         ss << setw(8) << setfill('0') << reg0Value;
-    }
-    else{
+    else
         ss << setw(8) << setfill('0') << regValue;
-    }
-    if (regValue[0] > reg0Value[0]){
+    if (regValue[0] > reg0Value[0])
         return;
-    }
-
-    else if (regValue[0] < reg0Value[0]){
-        if (idxMem % 2 == 0) // Ensure valid memory address.
-            counter = idxMem; // Set program counter to new address.
-        else
-            halt(); // Halt if address is invalid.
-    }
+    else if (regValue[0] < reg0Value[0])
+        counter = idxMem; // Set program counter to new address.
     else{
         if (alu.BinToDec(regValue) > alu.BinToDec(reg0Value))
-            if (idxMem % 2 == 0) // Ensure valid memory address.
-                counter = idxMem; // Set program counter to new address.
-            else
-                halt(); // Halt if address is invalid.
+            counter = idxMem; // Set program counter to new address.
     }
 }
 
