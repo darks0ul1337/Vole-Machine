@@ -20,7 +20,7 @@ public:
     void OR(Memory& Register, int idxReg1, int idxReg2, int idxReg3);
     void AND(Memory& Register, int idxReg1, int idxReg2, int idxReg3);
     void XOR(Memory& Register, int idxReg1, int idxReg2, int idxReg3);
-    bool isValid(string inst); // Check if a string is a valid hexadecimal.
+    bool isValid(string &inst); // Check if a string is a valid hexadecimal.
 };
 
 class CU { // Define a CU (Control Unit) class to manage operations.
