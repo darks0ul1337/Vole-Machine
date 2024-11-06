@@ -303,6 +303,9 @@ vector<string> CPU::decode(string instruction) { // Decode the instruction into 
 bool CPU::get_is_halted(){
     return cu.is_halted;
 }
+void CPU::set_is_halted(bool stat){
+    cu.is_halted = stat;
+}
 
 void CPU::execute(Memory& Reg, Memory& memory, vector<string> instruction) { // Execute the decoded instruction.
     switch (instruction[0][0]) { // Determine the operation based on opcode.

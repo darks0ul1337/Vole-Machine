@@ -60,6 +60,7 @@ public:
     int getCounter();
     string getReg(int idx);
     bool get_is_halted();
+    void set_is_halted(bool stat);
     friend class Machine; // Grant Machine class access to CPU's private members.
 };
 
